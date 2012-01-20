@@ -13,16 +13,12 @@ class Map(object):
 
     def _get_region_coords(self, region):
         """Returns the coords for a region"""
-        return [(r[0] * self.width_ratio, r[1] * self.height_ratio) for r in region[1]]
+        return [(r[0] * self.width_ratio, r[0] * self.height_ratio) for r in region[0]]
 
     def _svg_to_polygon(self):
         """Converts the svg map file to a list of polygons"""
-        polygons = []
         groups = parse(self.image)
-        #polygons = [[self._get_region_coords(region) for region in groups[g]] for g in groups]
-        for g in groups:
-            for path in groups[g]:
-                polygons.append(path)
+        polygons = [[self._get_region_coords(region) for region in g] for g in groups]
         return polygons
 
     def get_map(self):
@@ -30,7 +26,6 @@ class Map(object):
 
 class UsaMap(Map):
     def __init__(self):
-        Map.__init__(self)
         self.image = './gfx/maps/usa.svg'
 
 class ChinaMap(Map):

@@ -27,7 +27,7 @@ class Gui(object):
     def _draw_map(self):
         map = UsaMap()
         for points in map.get_map():
-            pygame.draw.polygon(surface, random_color("blue"), points)
+            pygame.draw.polygon(self.foreground, random_color("blue"), points)
 
     def _blit(self):
         self.screen.blit(self.background, (0, 0))
@@ -49,6 +49,6 @@ class Gui(object):
                 elif event.type == MOUSEBUTTONDOWN:
                     return
 
-        self.screen.blit(background, (0, 0))
-        pygame.display.flip()
+            self.screen.blit(self.background, (0, 0))
+            pygame.display.flip()
 
