@@ -30,7 +30,7 @@ import xml.dom.minidom
 import parse_path
 
 
-def parse(filename, keyword = None):
+def parse(filename):
 
 
 
@@ -40,12 +40,10 @@ def parse(filename, keyword = None):
 
     x, y = 800, 600
     #x , y = None, None
-    #groups = 'States'
+    groups = 'States'
+    groups = None
 
-    #groups = ['layer4','layer6','layer7']
-    #layer 4 is provinces in china
 
-    groups = keyword
     width = svg.getAttribute('width')
     height = svg.getAttribute('height')
     #width, height = 958.691, 592.79
@@ -61,17 +59,16 @@ def parse(filename, keyword = None):
         elements = [g for g in svg.getElementsByTagName('g') if (g.hasAttribute('id') and g.getAttribute('id') in groups)]
         elements.extend([p for p in svg.getElementsByTagName('path') if (p.hasAttribute('id') and p.getAttribute('id') in groups)])
     else:
-        #elements = svg.getElementsByTagName('g')
-        elements = [g for g in svg.getElementsByTagName('g') if (g.hasAttribute('id'))]
-        elements.extend([p for p in svg.getElementsByTagName('path') if (p.hasAttribute('id'))])
-
+        elements = svg.getElementsByTagName('glyph')
 
     parsed_groups = {}
     for e in elements:
         paths = []
-        if e.nodeName == 'g':
+        if e.nodeName == 'glyph':
             for path in e.getElementsByTagName('path'):
                 points = parse_path.get_points(path.getAttribute('d'))
+                print points
+                #print points
                 #points = path.getAttribute('d')
                 for pointset in points:
                     paths.append([path.getAttribute('id'), pointset])

@@ -25,9 +25,14 @@ class Gui(object):
         self.foreground = pygame.Surface(self.screen.get_size())
 
     def _draw_map(self):
-        map = UsaMap()
-        for points in map.get_map():
-            pygame.draw.polygon(self.foreground, random_color("blue"), points)
+        usa_map = UsaMap()
+        china_map = ChinaMap()
+        for points in china_map.get_map():
+            if len(points) > 2:
+                pygame.draw.polygon(self.foreground, random_color("red"), points)
+        for points in usa_map.get_map():
+            if len(points) > 2:
+                pygame.draw.polygon(self.foreground, random_color("blue"), points)
 
     def _blit(self):
         self.screen.blit(self.background, (0, 0))
