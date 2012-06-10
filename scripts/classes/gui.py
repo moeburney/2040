@@ -25,14 +25,40 @@ class Gui(object):
         self.foreground = pygame.Surface(self.screen.get_size())
 
     def _draw_map(self):
+        color1 = random_color("red")
+        color2 = random_color("blue")
+        #TODO: These maps don't need to be separate class objects
         usa_map = UsaMap()
         china_map = ChinaMap()
         for points in china_map.get_map():
             if len(points) > 2:
-                pygame.draw.polygon(self.foreground, random_color("red"), points)
+                pygame.draw.polygon(self.foreground, color1, points)
         for points in usa_map.get_map():
             if len(points) > 2:
-                pygame.draw.polygon(self.foreground, random_color("blue"), points)
+                pygame.draw.polygon(self.foreground, color2, points)
+        #self._create_regions(china_map, usa_map)
+
+    def _create_regions(self, map1, map2):
+        #loop through map points and draw with 1 color n polygons that touch
+        #keep looping till polygon is drawn
+        prev_points = None
+        n = 0
+        pointz = map1.get_map()
+        for points in pointz:
+            if len(points) > 2:
+                pt = Point(points)
+                if prev_points is not None:
+                    if pt.touches(prev_points) and n < 8:
+                        print "touching"
+                        color1 = random_color("red")
+                        pygame.draw.polygon(self.foreground, color1, points)
+                        prev_points = Point(points)
+                        n += 1
+                    else:
+                        n = 0
+                else:
+                    prev_points = Point(points)
+
 
     def _blit(self):
         self.screen.blit(self.background, (0, 0))
