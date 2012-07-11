@@ -3,7 +3,13 @@ import os, pygame
 from map import *
 from pygame.locals import *
 from shapely.geometry import Point, Polygon
-from colors import random_color
+from colors import random_color, search_color
+from pprint import pprint
+
+def hex_to_rgb(value):
+    value = value.lstrip('#')
+    lv = len(value)
+    return tuple(int(value[i:i+lv/3], 16) for i in range(0, lv, lv/3))
 
 class Gui(object):
     def __init__(self):
@@ -25,39 +31,22 @@ class Gui(object):
         self.foreground = pygame.Surface(self.screen.get_size())
 
     def _draw_map(self):
-        color1 = random_color("red")
-        color2 = random_color("blue")
+        china_regions = []
+        usa_regions = []
+        color1 = search_color("red")
+        color2 = search_color("blue")
         #TODO: These maps don't need to be separate class objects
         usa_map = UsaMap()
         china_map = ChinaMap()
-        for points in china_map.get_map():
-            if len(points) > 2:
-                pygame.draw.polygon(self.foreground, color1, points)
-        for points in usa_map.get_map():
-            if len(points) > 2:
-                pygame.draw.polygon(self.foreground, color2, points)
-        #self._create_regions(china_map, usa_map)
-
-    def _create_regions(self, map1, map2):
-        #loop through map points and draw with 1 color n polygons that touch
-        #keep looping till polygon is drawn
-        prev_points = None
-        n = 0
-        pointz = map1.get_map()
-        for points in pointz:
-            if len(points) > 2:
-                pt = Point(points)
-                if prev_points is not None:
-                    if pt.touches(prev_points) and n < 8:
-                        print "touching"
-                        color1 = random_color("red")
-                        pygame.draw.polygon(self.foreground, color1, points)
-                        prev_points = Point(points)
-                        n += 1
-                    else:
-                        n = 0
-                else:
-                    prev_points = Point(points)
+        china_regions = china_map.get_map()
+        for points in china_regions:
+            if len(points.values()[0]) > 2:
+                pygame.draw.polygon(self.foreground, hex_to_rgb("a80000"), points.values()[0])
+        #get regions w/ proper polygons
+        self.usa_regions = [x for x in usa_map.get_map() if len(x.values()[0]) > 2]
+        for points in self.usa_regions:
+            if len(points.values()[0]) > 2:
+                pygame.draw.polygon(self.foreground, hex_to_rgb("0052a5"), points.values()[0])
 
 
     def _blit(self):
@@ -78,7 +67,16 @@ class Gui(object):
                 elif event.type == KEYDOWN and event.key == K_ESCAPE:
                     return
                 elif event.type == MOUSEBUTTONDOWN:
-                    return
+                    from pprint import pprint
+                    pt = Point(pygame.mouse.get_pos())
+                    pt_match = [[key for key,val in x.iteritems() if pt.intersects(Polygon(val))] for x in self.usa_regions]
+                    #pt_match = [value for key,value in self.usa_regions[0] if pt.intersects(value)]
+                    #pt_match = [a for a in self.usa_polys if pt.intersects(Polygon(a))]
+                    if pt_match:
+                        #clear out the empty lists so that pt_match only contains the region string
+                        pt_match = [x for x in pt_match if x]
+                        pprint(pt_match[0][0])
+
 
             self.screen.blit(self.background, (0, 0))
             pygame.display.flip()

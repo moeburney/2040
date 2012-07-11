@@ -31,15 +31,15 @@ def parse(filename):
 
 
     parsed_groups = {}
+    colors = {}
     for e in elements:
-        style = e.getAttribute('style')
+        color = e.getAttribute('style')[6:12]
         paths = []
         points = parse_path.get_points(e.getAttribute('d'))
         for pointset in points:
             paths.append([e.getAttribute('id'), pointset])
         parsed_groups[e.getAttribute('id')] = paths
-        # working on a way to get the regional color data for each polygon
-        #parsed_groups[e.getAttribute('id')] = {paths:style}
+        colors[e.getAttribute('id')] = color
 
     return parsed_groups
 
