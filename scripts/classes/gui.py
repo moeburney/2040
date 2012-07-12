@@ -31,22 +31,22 @@ class Gui(object):
         self.foreground = pygame.Surface(self.screen.get_size())
 
     def _draw_map(self):
-        china_regions = []
-        usa_regions = []
         color1 = search_color("red")
         color2 = search_color("blue")
         #TODO: These maps don't need to be separate class objects
         usa_map = UsaMap()
         china_map = ChinaMap()
-        china_regions = china_map.get_map()
-        for points in china_regions:
-            if len(points.values()[0]) > 2:
-                pygame.draw.polygon(self.foreground, hex_to_rgb("a80000"), points.values()[0])
+        self.china_regions = [x for x in china_map.get_map() if len(x.values()[0]) > 2]
+        for points in self.china_regions:
+            #if len(points.values()[0]) > 2:
+            pygame.draw.polygon(self.foreground, hex_to_rgb("a80000"), points.values()[0])
         #get regions w/ proper polygons
         self.usa_regions = [x for x in usa_map.get_map() if len(x.values()[0]) > 2]
         for points in self.usa_regions:
-            if len(points.values()[0]) > 2:
-                pygame.draw.polygon(self.foreground, hex_to_rgb("0052a5"), points.values()[0])
+            #if len(points.values()[0]) > 2:
+            pygame.draw.polygon(self.foreground, hex_to_rgb("0052a5"), points.values()[0])
+
+        self.all_regions = self.china_regions + self.usa_regions
 
 
     def _blit(self):
@@ -67,15 +67,20 @@ class Gui(object):
                 elif event.type == KEYDOWN and event.key == K_ESCAPE:
                     return
                 elif event.type == MOUSEBUTTONDOWN:
-                    from pprint import pprint
                     pt = Point(pygame.mouse.get_pos())
-                    pt_match = [[key for key,val in x.iteritems() if pt.intersects(Polygon(val))] for x in self.usa_regions]
-                    #pt_match = [value for key,value in self.usa_regions[0] if pt.intersects(value)]
-                    #pt_match = [a for a in self.usa_polys if pt.intersects(Polygon(a))]
+                    pt_match = [[key for key,val in regns.iteritems() if pt.intersects(Polygon(val))] for regns in self.all_regions]
                     if pt_match:
                         #clear out the empty lists so that pt_match only contains the region string
-                        pt_match = [x for x in pt_match if x]
-                        pprint(pt_match[0][0])
+                        pt_match = [match for match in pt_match if match]
+                        try:
+                            pprint(pt_match[0][0])
+                            if pt_match[0][0] > 4:
+                                print "attacked china"
+                            #clicked method sends click info to the player controller
+                            #once sent to controller, it is processed as an action (attack, build, or defend)
+                            #self.clicked(pt_match[0][0]
+                        except IndexError:
+                            pass
 
 
             self.screen.blit(self.background, (0, 0))

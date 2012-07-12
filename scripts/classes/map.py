@@ -12,10 +12,22 @@ class Map(object):
         self.start_pos = 0
 
     def _convert_state_to_region(self, state):
-        if state in ["WA", "CA", "OR"]:
+        if (state in ["WA", "CA", "OR", "NV", "MT", "ID", "WY", "UT", "CO",
+            "AZ", "NM"]):
             return 1
-        else:
+        elif (state in ["ND", "SD", "NE", "KS", "MN", "IA", "MO", "WI", "IL",
+            "IN", "MI", "OH"]):
             return 2
+        elif (state in ["OK", "TX", "AR", "LA", "KY", "TN", "MS", "AL", "WV",
+            "MD", "DE", "DC", "VA", "NC", "SC", "MS", "AL", "GA", "FL"]):
+            return 3
+        elif (state in ["NY", "PA", "NJ", "VT", "NH", "ME", "MA", "CT", "RI",
+            "NJ"]):
+            return 4
+        elif state in ["_40446064", "_40521872", "_40437568"]:
+            return 5
+        else:
+            return 6
 
     def _svg_to_polygons(self):
         """Converts the svg map file to a list of polygons"""
