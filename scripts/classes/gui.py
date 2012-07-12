@@ -68,9 +68,14 @@ class Gui(object):
                     return
                 elif event.type == MOUSEBUTTONDOWN:
                     pt = Point(pygame.mouse.get_pos())
-                    pt_match = [[key for key,val in regns.iteritems() if pt.intersects(Polygon(val))] for regns in self.all_regions]
+
+                    #this list comprehension gets the clicked region
+                    pt_match = ([[key for key,val in regns.iteritems()
+                    if pt.intersects(Polygon(val))] for regns in self.all_regions])
+
                     if pt_match:
-                        #clear out the empty lists so that pt_match only contains the region string
+                        #clear out the empty lists so that pt_match
+                        #only contains the region string
                         pt_match = [match for match in pt_match if match]
                         try:
                             pprint(pt_match[0][0])
