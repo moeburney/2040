@@ -31,20 +31,27 @@ class Gui(object):
         self.foreground = pygame.Surface(self.screen.get_size())
 
     def _draw_map(self):
-        color1 = search_color("red")
-        color2 = search_color("blue")
         #TODO: These maps don't need to be separate class objects
         usa_map = UsaMap()
         china_map = ChinaMap()
-        self.china_regions = [x for x in china_map.get_map() if len(x.values()[0]) > 2]
+
+        #get the china map but make sure they are polygons
+        self.china_regions = ([x for x in china_map.get_map()
+        if len(x.values()[0]) > 2])
+
+        #draw the china map
         for points in self.china_regions:
-            #if len(points.values()[0]) > 2:
-            pygame.draw.polygon(self.foreground, hex_to_rgb("a80000"), points.values()[0])
-        #get regions w/ proper polygons
-        self.usa_regions = [x for x in usa_map.get_map() if len(x.values()[0]) > 2]
+            (pygame.draw.polygon(self.foreground, hex_to_rgb("a80000"),
+            points.values()[0]))
+
+        #get the usa map but make sure they are polygons
+        self.usa_regions = ([x for x in usa_map.get_map()
+        if len(x.values()[0]) > 2])
+
+        #draw the usa mao
         for points in self.usa_regions:
-            #if len(points.values()[0]) > 2:
-            pygame.draw.polygon(self.foreground, hex_to_rgb("0052a5"), points.values()[0])
+            (pygame.draw.polygon(self.foreground, hex_to_rgb("0052a5"),
+            points.values()[0]))
 
         self.all_regions = self.china_regions + self.usa_regions
 
@@ -86,6 +93,7 @@ class Gui(object):
                             #self.clicked(pt_match[0][0]
                         except IndexError:
                             pass
+
 
 
             self.screen.blit(self.background, (0, 0))
