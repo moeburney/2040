@@ -19,6 +19,7 @@ class Gui(object):
         self.width = 1440
         self.height = 960
         self.caption = '2040'
+        self.world = World()
 
     def _prepare(self):
         pygame.init()
@@ -66,6 +67,10 @@ class Gui(object):
         self._draw_map()
         self._blit()
 
+    def click(self, clicked):
+        if clicked > 4 < 7:
+            controller.click(clicked)
+
     def game_loop(self):
         while 1:
             for event in pygame.event.get():
@@ -85,12 +90,8 @@ class Gui(object):
                         #only contains the region string
                         pt_match = [match for match in pt_match if match]
                         try:
-                            pprint(pt_match[0][0])
-                            if pt_match[0][0] > 4:
-                                print "attacked china"
-                            #clicked method sends click info to the player controller
-                            #once sent to controller, it is processed as an action (attack, build, or defend)
-                            #self.clicked(pt_match[0][0]
+                            #send click info to the world object
+                            self.world.process_action(pt_match[0][0])
                         except IndexError:
                             pass
 
