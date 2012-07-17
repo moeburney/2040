@@ -17,14 +17,13 @@ def process_action(world, action):
     players = world['players']
     player_n = _game.get_active_player(world)
 
-    if action > 0 < 8:
+    if action < 8:
         player = _game.attack(players, action)
         print "attacked"
-    elif action > 8 or action is None:
+    else:
         player = _game.invest(world['players'][player_n])
         print "invested"
 
-    #awkward line needs fixing
     print world
     return world
 

@@ -45,7 +45,7 @@ def draw_map(foreground):
     usa_regions = ([x for x in _map.get_map(0)
     if len(x.values()[0]) > 2])
 
-    #draw the usa mao
+    #draw the usa map
     for points in usa_regions:
         (pygame.draw.polygon(foreground, hex_to_rgb("0052a5"),
         points.values()[0]))
@@ -70,21 +70,25 @@ def game_loop():
                 if pt.intersects(Polygon(val))] for regns in all_regions])
 
                 if pt_match:
+                    #player clicked a region, coords are in nested list
                     #clear out the empty lists so that pt_match
-                    #only contains the region string
+                    #only contains the region int
                     pt_match = [match for match in pt_match if match]
                     try:
-                        #send click info to the world object
-                        global world
-                        world = _world.process_action(world, pt_match[0][0])
-                        world = _world.refresh(world)
-                        if world['end'] == 1:
-                            print "Game over."
-                            return
+                        pt_int = pt_match[0][0]
                     except IndexError:
-                        pass
+                        pt_int = 9
+                else:
+                    #player clicked outside of a region
+                    pt_int = 10
 
-
+                #send click info to the world object
+                global world
+                world = _world.process_action(world, pt_int)
+                world = _world.refresh(world)
+                if world['end'] == 1:
+                    print "Game over."
+                    return
 
         screen.blit(background, (0, 0))
         pygame.display.flip()

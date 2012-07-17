@@ -40,7 +40,7 @@ def attack(players, region):
 def invest(player):
     #returns a random tech investment
     investment = _random_invest()
-    player['morale'] += investment['points']
+    player['morale'] += investment
     return player
 
 def conquer(players, attacker, defender, region):
