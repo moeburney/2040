@@ -7,30 +7,33 @@ import game_funcs as _game
 
 def make_world():
     world = {}
-    world['players'] = _game.make_players(2)
+    world['players'] = _game.make_players()
     world['end'] = 0
     return world
 
 def process_action(world, action):
     '''the circuit board for all inputs'''
+    print action
     players = world['players']
     player_n = _game.get_active_player(world)
 
-    if action > 1 < 8:
-        player = _game.attack(players, world['players'][player_n], action)
+    if action > 0 < 8:
+        player = _game.attack(players, action)
+        print "attacked"
     elif action > 8 or action is None:
         player = _game.invest(world['players'][player_n])
         print "invested"
 
     #awkward line needs fixing
+    print world
     return world
 
 def refresh(world):
     player_n = _game.get_active_player(world)
-    if len(world['players'][player_n][regions]) < 1:
+    if len(world['players'][player_n]["regions"]) < 1:
         world['end'] = 1
     else:
-        world['players'] = _g.swap_turns(world['players'])
+        world['players'] = _game.swap_turns(world['players'])
     return world
 
 
