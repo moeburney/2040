@@ -1,27 +1,32 @@
 #/usr/bin/env/python
 
-def make_players():
-    players = {}
-    for n in range(2):
+def make_players(n, players=None):
+    if players is None:
+        players = []
+    if n < 2:
         players[n] = ({"points": 0,
                        "morale":0,
                        "prestige":0,
                        "cash":0,
                        "power":0,
                        "regions":[],
+                       "active":0,
                        "country":n})
-    return players
+        n+= 1
+        return make_players(n, players)
+    else:
+        return players
 
-def attack(player, region):
-    enemy = get_owner(region)
-    if player is enemy:
-        pass
+def attack(players, region):
     # a very rudimentary combat game logic
-    if player["morale"] > enemy["morale"]:
-        conquer(player, region)
+    for n in players:
+        if n["active"] == 1:
+            attacker = player[n]
+        if region is in n["region"]:
+            defender = player[n]
 
-def get_owner(region):
-    pass
+    if attacker["morale"] > defender["morale"]:
+        return conquer(attacker, region)
 
 def invest(player):
     #returns a random tech investment
@@ -29,16 +34,19 @@ def invest(player):
     player['morale'] += investment['points']
     return player
 
-def conquer(player, region):
-    player["regions"].append(region)
+def conquer(attacker, defender, region):
+    attacker["regions"].append(region)
+    defender["regions"].remove(region)
+    return player
 
 def get_active_player(world):
     if world['players'][0]['active'] == 1:
-        return world['players'][0]
+        return 0
     else:
-        return world['players'][1]
+        return 1
 
 def swap_turns(players):
+    #todo: make this simpler
     if players[0]['active'] == 1:
         players[0]['active'] = 0
         players[1]['active'] = 1

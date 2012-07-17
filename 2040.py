@@ -3,10 +3,10 @@ import os, pygame
 import world_funcs as _world
 import map_funcs as _map
 from misc_funcs import hex_to_rgb
-from map import *
 from pygame.locals import *
 from shapely.geometry import Point, Polygon
-from colors import random_color, search_color
+#todo: change directory structure
+from scripts.classes.colors import random_color, search_color
 from pprint import pprint
 
 WIDTH = 1440
@@ -15,20 +15,23 @@ CAPTION = '2040'
 
 def make_gui():
     pygame.init()
+    #todo: figure out a way to not use global
+    global screen
+    global background
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption(CAPTION)
     pygame.mouse.set_visible(1)
-    background = pygame.Surface(self.screen.get_size())
-    background = self.background.convert()
+    background = pygame.Surface(screen.get_size())
+    background = background.convert()
     background.fill((250, 250, 250))
-    foreground = pygame.Surface(self.screen.get_size())
-    draw_map(pygame, foreground)
-    screen.blit(self.background, (0, 0))
-    background.blit(self.foreground, (0, 0))
+    foreground = pygame.Surface(screen.get_size())
+    draw_map(foreground)
+    screen.blit(background, (0, 0))
+    background.blit(foreground, (0, 0))
     pygame.display.flip()
 
 
-def draw_map():
+def draw_map(foreground):
     #get the china map but make sure they are polygons
     china_regions = ([x for x in _map.get_map(1)
     if len(x.values()[0]) > 2])
@@ -47,9 +50,11 @@ def draw_map():
         (pygame.draw.polygon(foreground, hex_to_rgb("0052a5"),
         points.values()[0]))
 
+    #todo: don't use global
+    global all_regions
     all_regions = china_regions + usa_regions
 
-def game_loop(self):
+def game_loop():
 
     while 1:
         for event in pygame.event.get():
@@ -70,22 +75,27 @@ def game_loop(self):
                     pt_match = [match for match in pt_match if match]
                     try:
                         #send click info to the world object
+                        global world
                         world = _world.process_action(world, pt_match[0][0])
                         world = _world.refresh(world)
+                        if world['end'] == 1:
+                            print "Game over."
+                            return
                     except IndexError:
                         pass
 
 
 
-        self.screen.blit(self.background, (0, 0))
+        screen.blit(background, (0, 0))
         pygame.display.flip()
 
 
 def main():
-    try make_gui():
-        world = _world.make_world()
-        game_loop()
-    except:
-        pass
+    #todo: error handling
+    make_gui()
+    #todo: don't use global
+    global world
+    world = _world.make_world()
+    game_loop()
 
 if __name__ == '__main__': main()
