@@ -7,12 +7,14 @@ def make_players(n=0, players=None):
     if n == 0:
         region_range = xrange(n+1, n+5)
         active = 1
+        morale = 20
     elif n == 1:
         region_range = xrange(n+4, n+8)
         active = 0
+        morale = 0
     if n < 2:
         players[n] = ({"points": 0,
-                       "morale":0,
+                       "morale":morale,
                        "prestige":0,
                        "cash":0,
                        "power":0,
@@ -26,10 +28,10 @@ def make_players(n=0, players=None):
 
 def attack(players, region):
     # a very rudimentary combat game logic
-    for n in len(players):
-        if n["active"] == 1:
+    for n in xrange(2):
+        if players[n]["active"] == 1:
             attacker = n
-        if region in n["regions"]:
+        if region in players[n]["regions"]:
             defender = n
 
     if players[attacker]["morale"] > players[defender]["morale"]:
