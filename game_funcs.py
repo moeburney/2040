@@ -38,3 +38,9 @@ def get_active_player(world):
     else:
         return world['players'][1]
 
+def swap_turns(world):
+    if world['players'][0]['active'] == 1:
+        return world['players'][1]
+    else:
+        return world['players'][0]
+
