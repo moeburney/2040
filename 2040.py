@@ -70,7 +70,8 @@ def game_loop(self):
                     pt_match = [match for match in pt_match if match]
                     try:
                         #send click info to the world object
-                        _world.process_action(world, pt_match[0][0])
+                        world = _world.process_action(world, pt_match[0][0])
+                        world = _world.refresh(world)
                     except IndexError:
                         pass
 

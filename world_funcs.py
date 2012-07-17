@@ -1,4 +1,8 @@
 #/usr/bin/env python
+
+'''in this module, each function modifies elements of the world
+by calling functions in the game_functions module'''
+
 import game_funcs as _game
 
 def make_world():
@@ -9,18 +13,20 @@ def make_world():
 def process_action(self, world, action):
     player = _game.get_active_player(world)
 
-    if action > 1 < 5:
-        _game.attack(player, region)
-    elif action > 5:
-        _game.build(player, region)
+    if action > 1 < 8:
+        player = _game.attack(player, region)
+    elif action > 8:
+        player = _game.invest(player)
 
-    _game.refresh_world(world)
+    return world
 
-def refresh_world(self, world):
-    if _game.get_active_player(world)[points] > 100:
-        _game.end_game()
+def refresh(world):
+    if len(_game.get_active_player(world)[regions]) < 1:
+        world['active'] = 0
     else:
-        _game.swap_turns()
+        world['active'] = _game.swap_turns(world)
+    return world
+
 
 
 

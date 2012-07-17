@@ -8,6 +8,7 @@ def make_players():
                        "prestige":0,
                        "cash":0,
                        "power":0,
+                       "regions":[],
                        "country":n})
     return players
 
@@ -19,9 +20,21 @@ def attack(player, region):
     if player["morale"] > enemy["morale"]:
         conquer(player, region)
 
-
 def get_owner(region):
     pass
 
+def invest(player):
+    #returns a random tech investment
+    investment = _random_invest()
+    player['points'] += investment['points']
+    return player
+
 def conquer(player, region):
     player["regions"].append(region)
+
+def get_active_player(world):
+    if world['players'][0]['active'] == 1:
+        return world['players'][0]
+    else:
+        return world['players'][1]
+
