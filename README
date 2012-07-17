@@ -2,4 +2,4 @@
 
 By design the game is not written in an object oriented style. It uses a combination of imperetive and functional code.
 
-This is a long-term project, its main purpose to play around with implementating various AI algorithms in python.
+This is a long-term project, its main purpose to play around with implementing various AI algorithms in python.
