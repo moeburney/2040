@@ -1,5 +1,5 @@
-2040 is a turn based strategy game to be written in python/pygame
+2040 is a turn based strategy game currently written in python/pygame. 
 
-PLOT
+By design the game is not written in an object oriented style. It uses a combination of imperetive and functional code.
 
-It is the year 2040 and there are two superpowers: China and The United States of America. An attack has triggered a war between the two nations
+This is a long-term project, its main purpose to play around with implementating various AI algorithms in python.
