@@ -18,6 +18,7 @@ def make_gui():
     #todo: figure out a way to not use global
     global screen
     global background
+    global foreground
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption(CAPTION)
     pygame.mouse.set_visible(1)
@@ -54,11 +55,16 @@ def draw_map(foreground):
     global all_regions
     all_regions = china_regions + usa_regions
 
-def color_regions(region, world):
-    if player == 0:
-        pygame.draw.polygon(foreground, hex_to_rgb("0052a5"), all_regions[region])
-    else:
-        pygame.draw.polygon(foreground, hex_to_rgb("a80000"), all_regions[region])
+def color_regions(world):
+    global foreground
+    for player_num in xrange(2):
+        regions = world["players"][player_num]["regions"]
+        for region in regions:
+            if player_num == 0:
+                print all_regions[region].values()[0]
+                pygame.draw.polygon(foreground, hex_to_rgb("0052a5"), all_regions[region].values()[0])
+            else:
+                pygame.draw.polygon(foreground, hex_to_rgb("a80000"), all_regions[region].values()[0])
 
 def game_loop():
 
@@ -99,6 +105,7 @@ def game_loop():
                     print "Game over."
                     return
 
+        background.blit(foreground, (0, 0))
         screen.blit(background, (0, 0))
         pygame.display.flip()
 
