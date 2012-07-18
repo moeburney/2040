@@ -12,12 +12,12 @@ def make_world():
     return world
 
 def process_action(world, action):
-    '''the circuit board for all inputs'''
+    '''processes integer inputs into actions'''
     print action
     players = world['players']
     player_n = _game.get_active_player(world)
 
-    if action < 8:
+    if action < 13:
         player = _game.attack(players, action)
         print "attacked"
     else:

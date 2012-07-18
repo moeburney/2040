@@ -31,10 +31,22 @@ def _convert_state_to_region(state):
     elif (state in ["NY", "PA", "NJ", "VT", "NH", "ME", "MA", "CT", "RI",
         "NJ"]):
         return 4
-    elif state in ["_40446064", "_40521872", "_40437568"]:
+    elif state in ["HI"]:
         return 5
-    else:
+    elif state in ["AK"]:
         return 6
+    elif state in ["_40446064", "_40437568"]:
+        return 7
+    elif state in ["_40521872", "_40576896"]:
+        return 8
+    elif state in ["_40526296", "_40524208"]:
+        return 9
+    elif state in ["_40549512", "_39889000", "_40509384"]:
+        return 10
+    elif state in ["_40578320", "_40499616"]:
+        return 11
+    else:
+        return 12
 
 def _svg_to_polygons(cdata):
     """Converts the svg map file to a list of polygons"""

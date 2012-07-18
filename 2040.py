@@ -54,6 +54,12 @@ def draw_map(foreground):
     global all_regions
     all_regions = china_regions + usa_regions
 
+def color_regions(region, world):
+    if player == 0:
+        pygame.draw.polygon(foreground, hex_to_rgb("0052a5"), all_regions[region])
+    else:
+        pygame.draw.polygon(foreground, hex_to_rgb("a80000"), all_regions[region])
+
 def game_loop():
 
     while 1:
@@ -76,16 +82,19 @@ def game_loop():
                     pt_match = [match for match in pt_match if match]
                     try:
                         pt_int = pt_match[0][0]
+                        print "state is "
+                        print pt_int
                     except IndexError:
-                        pt_int = 9
+                        pt_int = 14
                 else:
                     #player clicked outside of a region
-                    pt_int = 10
+                    pt_int = 15
 
                 #send click info to the world object
                 global world
                 world = _world.process_action(world, pt_int)
                 world = _world.refresh(world)
+                color_regions(world)
                 if world['end'] == 1:
                     print "Game over."
                     return
