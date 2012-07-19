@@ -61,8 +61,11 @@ def color_regions(world):
         regions = world["players"][player_num]["regions"]
         for region in regions:
             if player_num == 0:
-                print all_regions[region].values()[0]
-                pygame.draw.polygon(foreground, hex_to_rgb("0052a5"), all_regions[region].values()[0])
+                pygame.draw.polygon(foreground, hex_to_rgb("f00000"), all_regions[region].values()[0])
+                print "\n"
+                print "drawing region: "
+                print region
+                print "\n"
             else:
                 pygame.draw.polygon(foreground, hex_to_rgb("a80000"), all_regions[region].values()[0])
 
@@ -108,6 +111,7 @@ def game_loop():
         background.blit(foreground, (0, 0))
         screen.blit(background, (0, 0))
         pygame.display.flip()
+        pygame.display.update()
 
 
 def main():
