@@ -6,11 +6,11 @@ def make_players(n=0, players=None):
         players.append({})
     #todo: make this clearer
     if n == 0:
-        region_range = xrange(n+1, n+6)
+        region_range = xrange(1, 6)
         active = 1
         morale = 20000
     elif n == 1:
-        region_range = xrange(n+6, n+10)
+        region_range = xrange(7, 11)
         active = 0
         morale = 0
     if n < 2:

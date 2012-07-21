@@ -34,6 +34,8 @@ def make_gui():
 
 def draw_map(foreground):
     #get the china map but make sure they are polygons
+    global china_regions
+    global usa_regions
     china_regions = ([x for x in _map.get_map(1)
     if len(x.values()[0]) > 2])
 
@@ -57,20 +59,14 @@ def draw_map(foreground):
 
 def color_regions(world):
     global foreground
-    for player_num in xrange(2):
-        regions = world["players"][player_num]["regions"]
-        for region in regions:
-            if player_num == 0:
-                pygame.draw.polygon(foreground, hex_to_rgb("f00000"), all_regions[region].values()[0])
-                print "\n"
-                print "drawing region: "
-                print region
-                print "\n"
-            else:
-                pygame.draw.polygon(foreground, hex_to_rgb("a80000"), all_regions[region].values()[0])
+    global all_regions
+    for points in all_regions:
+        if points.keys()[0] in world["players"][0]["regions"]:
+            pygame.draw.polygon(foreground, hex_to_rgb("0052a5"), points.values()[0])
+        if points.keys()[0] in world["players"][1]["regions"]:
+            pygame.draw.polygon(foreground, hex_to_rgb("a80000"), points.values()[0])
 
 def game_loop():
-
     while 1:
         for event in pygame.event.get():
             if event.type == QUIT:
