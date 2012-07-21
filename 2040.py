@@ -100,9 +100,11 @@ def game_loop():
                 world = _world.process_action(world, pt_int)
                 world = _world.refresh(world)
                 color_regions(world)
+                '''
                 if world['end'] == 1:
                     print "Game over."
                     return
+                '''
 
         background.blit(foreground, (0, 0))
         screen.blit(background, (0, 0))
